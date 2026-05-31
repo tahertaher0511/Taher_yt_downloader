@@ -116,6 +116,13 @@ def find_js_runtime():
 st.markdown("<h1 style='text-align: center; margin-bottom: 5px;'>🎥 Taher YouTube Downloader</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #b3b3b3; font-size: 1.1rem; margin-bottom: 30px;'>A stunning Streamlit-native client for lightning-fast HD downloads</p>", unsafe_allow_html=True)
 
+# Server Status Diagnostic
+runtime_path = find_js_runtime()
+if not runtime_path:
+    st.warning("⚠️ **Server Status**: No JavaScript engine (Node.js) detected! YouTube's decryption challenges will fail, causing 'HTTP 403 Forbidden' errors on HD downloads. Please go to your Streamlit Dashboard, click the three dots (`...`) next to your app, and select **Reboot** to install Node.js.")
+else:
+    st.success("✅ **Server Status**: JavaScript Engine (Node.js) is active and running.")
+
 st.markdown("<div class='main-card'>", unsafe_allow_html=True)
 
 url = st.text_input("YouTube Video Link:", placeholder="Paste your link here (e.g. https://www.youtube.com/watch?v=...)")
@@ -127,7 +134,7 @@ if url:
     ydl_opts = {
         'quiet': True,
         'nocheckcertificate': True,
-        'extractor_args': {'youtube': {'player_client': ['android', 'web_embedded']}},
+        'extractor_args': {'youtube': {'player_client': ['android', 'android_vr', 'web_embedded']}},
     }
     if use_cookies and os.path.exists(cookie_path):
         ydl_opts['cookiefile'] = cookie_path
@@ -225,7 +232,7 @@ if url:
                             'merge_output_format': 'mp4',
                             'quiet': True,
                             'nocheckcertificate': True,
-                            'extractor_args': {'youtube': {'player_client': ['android', 'web_embedded']}},
+                            'extractor_args': {'youtube': {'player_client': ['android', 'android_vr', 'web_embedded']}},
                         }
                         if use_cookies and os.path.exists(cookie_path):
                             dl_opts['cookiefile'] = cookie_path
