@@ -125,6 +125,7 @@ if url:
     ydl_opts = {
         'quiet': True,
         'nocheckcertificate': True,
+        'extractor_args': {'youtube': {'player_client': ['web_embedded', 'android']}},
     }
     if os.path.exists(cookie_path):
         ydl_opts['cookiefile'] = cookie_path
@@ -222,6 +223,7 @@ if url:
                             'quiet': True,
                             'nocheckcertificate': True,
                             'concurrent_fragment_downloads': 5,
+                            'extractor_args': {'youtube': {'player_client': ['web_embedded', 'android']}},
                         }
                         if os.path.exists(cookie_path):
                             dl_opts['cookiefile'] = cookie_path
