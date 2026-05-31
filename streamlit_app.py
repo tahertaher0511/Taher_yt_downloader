@@ -152,37 +152,38 @@ if url:
                         info = ydl.extract_info(url, download=False)
                 else:
                     raise first_err
-                title = info.get('title', 'Unknown Title')
-                thumbnail = info.get('thumbnail', '')
-                duration = info.get('duration', 0)
-                formats = info.get('formats', [])
-                
-                # Filter formats to unique resolutions
-                available_formats = []
-                for f in formats:
-                    if f.get('vcodec') != 'none':
-                        res = f.get('resolution') or f"{f.get('width', '')}x{f.get('height', '')}"
-                        if res and res != "x":
-                            available_formats.append({
-                                'format_id': f['format_id'],
-                                'ext': f['ext'],
-                                'resolution': res,
-                                'filesize': f.get('filesize'),
-                                'acodec': f.get('acodec'),
-                                'fps': f.get('fps'),
-                            })
-                
-                unique_formats = {}
-                for f in available_formats:
-                    res = f['resolution']
-                    if res not in unique_formats:
+            
+            title = info.get('title', 'Unknown Title')
+            thumbnail = info.get('thumbnail', '')
+            duration = info.get('duration', 0)
+            formats = info.get('formats', [])
+            
+            # Filter formats to unique resolutions
+            available_formats = []
+            for f in formats:
+                if f.get('vcodec') != 'none':
+                    res = f.get('resolution') or f"{f.get('width', '')}x{f.get('height', '')}"
+                    if res and res != "x":
+                        available_formats.append({
+                            'format_id': f['format_id'],
+                            'ext': f['ext'],
+                            'resolution': res,
+                            'filesize': f.get('filesize'),
+                            'acodec': f.get('acodec'),
+                            'fps': f.get('fps'),
+                        })
+            
+            unique_formats = {}
+            for f in available_formats:
+                res = f['resolution']
+                if res not in unique_formats:
+                    unique_formats[res] = f
+                else:
+                    if f.get('acodec') != 'none' and unique_formats[res].get('acodec') == 'none':
                         unique_formats[res] = f
-                    else:
-                        if f.get('acodec') != 'none' and unique_formats[res].get('acodec') == 'none':
-                            unique_formats[res] = f
-                            
-                sorted_formats = sorted(unique_formats.values(), key=lambda x: int(str(x['resolution']).split('x')[-1]) if 'x' in str(x['resolution']) else 0, reverse=True)
-                
+                        
+            sorted_formats = sorted(unique_formats.values(), key=lambda x: int(str(x['resolution']).split('x')[-1]) if 'x' in str(x['resolution']) else 0, reverse=True)
+            
             # Display details
             col1, col2 = st.columns([1, 1.3], gap="medium")
             with col1:
