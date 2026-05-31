@@ -119,6 +119,7 @@ st.markdown("<p style='text-align: center; color: #b3b3b3; font-size: 1.1rem; ma
 st.markdown("<div class='main-card'>", unsafe_allow_html=True)
 
 url = st.text_input("YouTube Video Link:", placeholder="Paste your link here (e.g. https://www.youtube.com/watch?v=...)")
+use_cookies = st.checkbox("🔑 Use YouTube Cookies (Only check if downloading private or age-restricted videos)", value=False)
 
 if url:
     # Set up options
@@ -128,9 +129,9 @@ if url:
         'nocheckcertificate': True,
         'extractor_args': {'youtube': {'player_client': ['web_embedded', 'android']}},
     }
-    if os.path.exists(cookie_path):
+    if use_cookies and os.path.exists(cookie_path):
         ydl_opts['cookiefile'] = cookie_path
-    if is_mac:
+    if is_mac and use_cookies:
         ydl_opts['cookiesfrombrowser'] = ('safari',)
     if runtime_path:
         runtime_name = "deno" if "deno" in runtime_path.lower() else "node"
@@ -226,9 +227,9 @@ if url:
                             'concurrent_fragment_downloads': 5,
                             'extractor_args': {'youtube': {'player_client': ['web_embedded', 'android']}},
                         }
-                        if os.path.exists(cookie_path):
+                        if use_cookies and os.path.exists(cookie_path):
                             dl_opts['cookiefile'] = cookie_path
-                        if is_mac:
+                        if is_mac and use_cookies:
                             dl_opts['cookiesfrombrowser'] = ('safari',)
                         if runtime_path:
                             dl_opts['js_runtimes'] = {runtime_name: {'path': runtime_path}}
