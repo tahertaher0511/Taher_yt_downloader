@@ -136,8 +136,19 @@ if url:
         
     with st.spinner("🔍 Fetching high-quality format choices..."):
         try:
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(url, download=False)
+            try:
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(url, download=False)
+            except Exception as first_err:
+                # Self-healing fallback: if signed-in cookie session fails, retry anonymously
+                if 'cookiefile' in ydl_opts:
+                    st.toast("⚠️ Cookie-access failed (YouTube security challenge). Retrying anonymously...")
+                    ydl_opts_fallback = ydl_opts.copy()
+                    ydl_opts_fallback.pop('cookiefile', None)
+                    with yt_dlp.YoutubeDL(ydl_opts_fallback) as ydl:
+                        info = ydl.extract_info(url, download=False)
+                else:
+                    raise first_err
                 title = info.get('title', 'Unknown Title')
                 thumbnail = info.get('thumbnail', '')
                 duration = info.get('duration', 0)
@@ -220,8 +231,19 @@ if url:
                             dl_opts['js_runtimes'] = {runtime_name: {'path': runtime_path}}
                             
                         try:
-                            with yt_dlp.YoutubeDL(dl_opts) as ydl:
-                                dl_info = ydl.extract_info(url, download=True)
+                            try:
+                                with yt_dlp.YoutubeDL(dl_opts) as ydl:
+                                    dl_info = ydl.extract_info(url, download=True)
+                            except Exception as dl_first_err:
+                                # Fallback to anonymous download if cookies fail
+                                if 'cookiefile' in dl_opts:
+                                    st.toast("⚠️ Secure download failed. Retrying anonymously...")
+                                    dl_opts_fallback = dl_opts.copy()
+                                    dl_opts_fallback.pop('cookiefile', None)
+                                    with yt_dlp.YoutubeDL(dl_opts_fallback) as ydl:
+                                        dl_info = ydl.extract_info(url, download=True)
+                                else:
+                                    raise dl_first_err
                                 
                                 # Find downloaded file
                                 downloaded_file = None
