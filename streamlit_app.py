@@ -26,20 +26,20 @@ st.markdown("""
     
     /* Main body background */
     .stApp {
-        background: linear-gradient(135deg, #0f0c1b 0%, #1e102f 100%);
+        background: linear-gradient(180deg, #07070a 0%, #000000 100%);
         font-family: 'Outfit', sans-serif;
         color: #ffffff;
     }
     
     /* Container styling */
     .main-card {
-        background: rgba(255, 255, 255, 0.04);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 24px;
         padding: 35px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95);
         margin-bottom: 25px;
     }
     
@@ -71,22 +71,23 @@ st.markdown("""
     
     /* Input field styling */
     .stTextInput input {
-        background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background: #000000 !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-radius: 14px !important;
         color: #ffffff !important;
         padding: 14px !important;
         font-size: 16px !important;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.6) !important;
     }
     .stTextInput input:focus {
         border-color: #ff0055 !important;
-        box-shadow: 0 0 12px rgba(255, 0, 85, 0.25) !important;
+        box-shadow: 0 0 15px rgba(255, 0, 85, 0.3) !important;
     }
     
     /* Dropdown selection */
     .stSelectbox div[data-baseweb="select"] {
-        background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background: #000000 !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-radius: 14px !important;
     }
 </style>
